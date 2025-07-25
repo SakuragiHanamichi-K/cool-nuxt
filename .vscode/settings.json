@@ -1,0 +1,46 @@
+{
+  // 🚀 vue 配置（Vue 3 最佳实践）
+  "vue.autoInsert.bracketSpacing": true,
+  // 模板里自动补全 ref，不建议开启（模板里不需要 .value）
+  "vue.autoInsert.dotValue": false,
+  // 提取组件时提示输入新名称
+  "vue.codeActions.askNewComponentName": true,
+  "vue.editor.focusMode": true,
+  "vue.editor.reactivityVisualization": true,
+  "vue.editor.templateInterpolationDecorators": true,
+  "vue.format.script.initialIndent": false,
+  "vue.format.style.initialIndent": false,
+  // 模板自动缩进（推荐开启）
+  "vue.format.template.initialIndent": true,
+  // 属性换行风格：自动（根据行长判断）
+  "vue.format.wrapAttributes": "auto",
+  // inlay hints（可视提示，建议业务项目关闭）
+  "vue.inlayHints.destructuredProps": false,
+  "vue.inlayHints.inlineHandlerLeading": false,
+  "vue.inlayHints.missingProps": false,
+  "vue.inlayHints.vBindShorthand": false,
+  // 组件名称推荐 PascalCase（大驼峰）
+  "vue.suggest.componentNameCasing": "preferPascalCase",
+  // defineProps / defineEmits 自动补全 const
+  "vue.suggest.defineAssignment": true,
+  // props 名字推荐 kebab-case（HTML 规范）
+  "vue.suggest.propNameCasing": "preferKebabCase",
+  // 语言支持扩展（可选）
+  "vue.server.includeLanguages": ["vue", "html", "md"],
+  // 调试日志关闭
+  "vue.trace.server": "off",
+  // cSpell 设置
+  "cSpell.words": ["nuxt", "nuxthub", "ofetch", "runtimeConfig", "env", "dotenv", "NUXT_PUBLIC_API"],
+  // Prettier 相关
+  "prettier.configPath": "./.prettierrc.json",
+  // 编辑器相关
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "One Dark Pro",
+  "editor.fontSize": 18,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit", // 修复所有支持的（包括 ESLint、Prettier）
+    "source.fixAll.eslint": "explicit" // 修复 ESLint
+  }
+}
