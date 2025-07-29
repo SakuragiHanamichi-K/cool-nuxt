@@ -8,6 +8,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/scripts', '@nuxt/test-utils', '@nuxt/ui'],
   runtimeConfig: {
+    mongoUri: process.env.MONGODB_URI,
+    mongoUriSuffix: process.env.MONGODB_URI_SUFFIX,
+    jwtSecret: process.env.JWT_SECRET,
     public: {
       appName: process.env.NUXT_PUBLIC_PROJECT_NAME,
     },

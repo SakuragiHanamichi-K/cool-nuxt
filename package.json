@@ -16,11 +16,17 @@
     "@nuxt/test-utils": "3.19.2",
     "@nuxt/ui": "3.3.0",
     "@unhead/vue": "^2.0.12",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.1",
     "eslint": "^9.31.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.5",
     "nuxt": "^4.0.1",
     "typescript": "^5.8.3",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10"
   }
 }
