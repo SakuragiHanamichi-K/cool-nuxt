@@ -33,6 +33,14 @@
   "cSpell.words": ["nuxt", "nuxthub", "ofetch", "runtimeConfig", "env", "dotenv", "NUXT_PUBLIC_API"],
   // Prettier 相关
   "prettier.configPath": "./.prettierrc.json",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.classAttributes": ["class", "ui"],
+  "tailwindCSS.experimental.classRegex": [["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]],
   // 编辑器相关
   "workbench.iconTheme": "material-icon-theme",
   "workbench.colorTheme": "One Dark Pro",

@@ -2,11 +2,16 @@
 // 手动加载环境变量
 import { config as loadEnv } from 'dotenv'
 loadEnv({ path: `.env.${process.env.NODE_ENV}` })
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/scripts', '@nuxt/test-utils'],
+  modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/scripts', '@nuxt/test-utils', '@nuxt/ui-pro'],
+  css: ['~/assets/css/main.css'],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   runtimeConfig: {
     // mongodb uri
     mongoUri: process.env.MONGODB_URI,
