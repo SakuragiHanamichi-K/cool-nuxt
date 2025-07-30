@@ -14,7 +14,6 @@
     "@nuxt/image": "1.10.0",
     "@nuxt/scripts": "0.11.10",
     "@nuxt/test-utils": "3.19.2",
-    "@nuxt/ui": "3.3.0",
     "@unhead/vue": "^2.0.12",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.1",
