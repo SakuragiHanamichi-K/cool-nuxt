@@ -46,15 +46,10 @@ async function handleSubmit() {
       method: 'POST',
       body: form,
     })
-
-    if (res.token) {
-      // 保存 token 到 cookie 或 localStorage
-      localStorage.setItem('token', res.token)
-      router.push('/') // 登录成功跳转主页
-    } else {
-      alert('登录失败，请重试')
-    }
+    router.push('/')
   } catch (err: any) {
+    console.log('err', err)
+
     alert(err?.data?.message || '请求失败')
   } finally {
     loading.value = false
