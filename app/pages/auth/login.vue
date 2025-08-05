@@ -1,6 +1,5 @@
 <template>
   <UPage>
-    <UPageHeader />
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
       <UCard class="w-full max-w-md shadow-xl">
         <template #header>
@@ -31,25 +30,24 @@
 </template>
 
 <script setup lang="ts">
-const router = useRouter()
+definePageMeta({
+  layout: 'login',
+})
 const loading = ref(false)
-
 const form = reactive({
   username: '',
   password: '',
 })
-
 async function handleSubmit() {
   loading.value = true
   try {
-    const res = await $fetch('/api/auth/login', {
+    const res = await $fetch('/api/auth/login-auto-register', {
       method: 'POST',
       body: form,
     })
-    router.push('/')
+    navigateTo('/')
   } catch (err: any) {
     console.log('err', err)
-
     alert(err?.data?.message || '请求失败')
   } finally {
     loading.value = false

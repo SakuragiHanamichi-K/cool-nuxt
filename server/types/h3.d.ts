@@ -1,8 +1,8 @@
-// import type { ServerResponse } from 'http'
-
-declare module 'http' {
-  interface ServerResponse {
-    success: (code?: number, msg?: string, data?: any) => void
-    fail: (code?: number, msg?: string, data?: any) => void
+declare module 'h3' {
+  interface H3EventContext {
+    user?: any
+    body?: any
+    success?: (data: any, code?: number) => void
+    fail?: (message?: string, code?: number) => void
   }
 }

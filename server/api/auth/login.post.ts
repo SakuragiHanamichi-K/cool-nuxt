@@ -1,7 +1,7 @@
 import { signToken } from '~~/server/utils/jwt'
 import UserSchema from '~~/server/models/User'
 import bcrypt from 'bcryptjs'
-import { AUTH_TOKEN, TOKEN_PREFIXES } from '~~/server/utils/constant'
+import { AUTH_TOKEN_COOKIE, AUTH_TOKEN_HEADER, TOKEN_PREFIXES, TOKEN_VALIDITY_PERIOD } from '~~/server/utils/constant'
 const runtimeConfig = useRuntimeConfig()
 
 export default defineEventHandler(async event => {
@@ -11,15 +11,21 @@ export default defineEventHandler(async event => {
   const UserModel = mongo.getModel(runtimeConfig.mongoTableName, 'User', UserSchema)
   const user = await UserModel.findOne({ username })
   if (!user) {
-    return event.node.res.fail(CodeMap.NOT_FOUND, '用户不存在!')
+    return event.context.fail('用户不存在!', CodeMap.NOT_FOUND)
   }
 
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) {
-    return event.node.res.fail(CodeMap.FORBIDDEN, '密码错误!')
+    return event.context.fail('密码错误!', CodeMap.FORBIDDEN)
   }
 
   const token = signToken({ userId: user._id, username: user.username })
-  setHeader(event, AUTH_TOKEN, `${TOKEN_PREFIXES}${token}`)
-  return event.node.res.success(CodeMap.SUCCESS, '登录成功!', user)
+  setHeader(event, AUTH_TOKEN_HEADER, `${TOKEN_PREFIXES}${token}`)
+  setCookie(event, AUTH_TOKEN_COOKIE, `${TOKEN_PREFIXES}${token}`, {
+    httpOnly: true, // 建议设置，防止 XSS
+    secure: true, // https 环境建议开启
+    sameSite: 'lax', // 控制跨域
+    maxAge: TOKEN_VALIDITY_PERIOD,
+  })
+  return event.context.success('登录成功!', CodeMap.SUCCESS, user)
 })

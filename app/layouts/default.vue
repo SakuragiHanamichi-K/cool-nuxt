@@ -1,6 +1,9 @@
 <template>
   <div class="layout-default">
-    <div class="header"></div>
+    <div class="header">
+      以物换物
+      <span @click="handleLogin">登录</span>
+    </div>
     <div class="body-container">
       <div class="sidebar">
         <div class="menu" v-for="menu in menus" :key="menu.path">
@@ -15,7 +18,7 @@
 </template>
 
 <script setup>
-const menus = [
+let menus = [
   { name: '首页', path: '/' },
   { name: '登录', path: '/login' },
   { name: '注册', path: '/register1' },
@@ -29,6 +32,9 @@ const menus = [
   { name: '注册', path: '/register9' },
   { name: '注册', path: '/register0' },
 ]
+function handleLogin() {
+  navigateTo('/auth/login')
+}
 </script>
 <style lang="scss" scoped>
 .layout-default {
