@@ -21,12 +21,12 @@ export default defineEventHandler(async event => {
       sameSite: 'lax', // 控制跨域
       maxAge: TOKEN_VALIDITY_PERIOD,
     })
-    return event.context.success('注册并登录成功!', CodeMap.SUCCESS, user)
+    return event.context.success(CodeMap.SUCCESS, '注册并登录成功!', user)
   }
 
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) {
-    return event.context.fail('密码错误!', CodeMap.FORBIDDEN)
+    return event.context.fail(CodeMap.FORBIDDEN, '密码错误!')
   }
 
   const token = signToken({ userId: user._id, username: user.username })
@@ -37,5 +37,5 @@ export default defineEventHandler(async event => {
     sameSite: 'lax', // 控制跨域
     maxAge: TOKEN_VALIDITY_PERIOD,
   })
-  return event.context.success('登录成功!', CodeMap.SUCCESS, user)
+  return event.context.success(CodeMap.SUCCESS, '登录成功!', user)
 })

@@ -40,17 +40,32 @@ const form = reactive({
 })
 async function handleSubmit() {
   loading.value = true
-  try {
-    const res = await $fetch('/api/auth/login-auto-register', {
-      method: 'POST',
-      body: form,
+  await $fetch('/api/auth/login-auto-register', {
+    method: 'POST',
+    body: form,
+  })
+    .then(res => {
+      console.log(res)
     })
-    navigateTo('/')
-  } catch (err: any) {
-    console.log('err', err)
-    alert(err?.data?.message || '请求失败')
-  } finally {
-    loading.value = false
-  }
+    .catch(err => {
+      console.log('err', err)
+    })
+    .finally(() => {
+      loading.value = false
+    })
+  // try {
+  //   const res = await $fetch('/api/auth/login-auto-register', {
+  //     method: 'POST',
+  //     body: form,
+  //   })
+  //   console.log(res)
+
+  //   navigateTo('/')
+  // } catch (err: any) {
+  //   console.log('err', err)
+  //   alert(err?.data?.message || '请求失败')
+  // } finally {
+  //   loading.value = false
+  // }
 }
 </script>

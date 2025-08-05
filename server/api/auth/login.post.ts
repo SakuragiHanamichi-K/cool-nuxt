@@ -11,12 +11,12 @@ export default defineEventHandler(async event => {
   const UserModel = mongo.getModel(runtimeConfig.mongoTableName, 'User', UserSchema)
   const user = await UserModel.findOne({ username })
   if (!user) {
-    return event.context.fail('用户不存在!', CodeMap.NOT_FOUND)
+    return event.context.fail(CodeMap.NOT_FOUND, '用户不存在!')
   }
 
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) {
-    return event.context.fail('密码错误!', CodeMap.FORBIDDEN)
+    return event.context.fail(CodeMap.FORBIDDEN, '密码错误!')
   }
 
   const token = signToken({ userId: user._id, username: user.username })
@@ -27,5 +27,5 @@ export default defineEventHandler(async event => {
     sameSite: 'lax', // 控制跨域
     maxAge: TOKEN_VALIDITY_PERIOD,
   })
-  return event.context.success('登录成功!', CodeMap.SUCCESS, user)
+  return event.context.success(CodeMap.SUCCESS, '登录成功!', user)
 })
