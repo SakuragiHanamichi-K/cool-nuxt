@@ -1,5 +1,6 @@
 import { signToken } from '~~/server/utils/jwt'
 import UserSchema from '~~/server/models/User'
+import { StatusCodeMap } from '~~/server/utils/codeMap'
 import bcrypt from 'bcryptjs'
 import { AUTH_TOKEN_COOKIE, AUTH_TOKEN_HEADER, TOKEN_PREFIXES, TOKEN_VALIDITY_PERIOD } from '~~/server/utils/constant'
 const runtimeConfig = useRuntimeConfig()
@@ -21,12 +22,12 @@ export default defineEventHandler(async event => {
       sameSite: 'lax', // 控制跨域
       maxAge: TOKEN_VALIDITY_PERIOD,
     })
-    return event.context.success(CodeMap.SUCCESS, '注册并登录成功!', user)
+    return event.context.success(StatusCodeMap.SUCCESS, '注册并登录成功!', user)
   }
 
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) {
-    return event.context.fail(CodeMap.FORBIDDEN, '密码错误!')
+    return event.context.fail(StatusCodeMap.FORBIDDEN, '密码错误!')
   }
 
   const token = signToken({ userId: user._id, username: user.username })
@@ -37,5 +38,5 @@ export default defineEventHandler(async event => {
     sameSite: 'lax', // 控制跨域
     maxAge: TOKEN_VALIDITY_PERIOD,
   })
-  return event.context.success(CodeMap.SUCCESS, '登录成功!', user)
+  return event.context.success(StatusCodeMap.SUCCESS, '登录成功!', user)
 })

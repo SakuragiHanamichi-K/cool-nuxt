@@ -24,11 +24,24 @@
         </div>
       </div>
     </div>
+    <UModal
+      title="Modal with close button"
+      :close="{
+        color: 'primary',
+        variant: 'outline',
+        class: 'rounded-full',
+      }"
+    >
+      <UButton label="Open" color="neutral" variant="subtle" />
+
+      <template #body>
+        <!-- <Placeholder class="h-48" /> -->
+      </template>
+    </UModal>
   </div>
 </template>
 <script setup lang="ts">
-// const runtimeConfig = useRuntimeConfig()
-// console.log(runtimeConfig)
+const loading = ref(false)
 const contentList = reactive([
   { id: 1, name: '家电' },
   { id: 2, name: '手机' },
@@ -41,39 +54,27 @@ const contentList = reactive([
   { id: 9, name: '内衣' },
   { id: 10, name: '袜子' },
 ])
+async function getProductList() {
+  loading.value = true
+  await $fetch('/api/product/product-list', {
+    method: 'POST',
+    body: {},
+  })
+    .then(res => {
+      console.log('+res+', res)
+    })
+    .catch(err => {
+      const errorResponse = extractError(err)
+      console.log('errorResponse', errorResponse)
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
 const itemsPerRow = 5
 const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
-async function register() {
-  try {
-    const res = await $fetch('/api/auth/register', {
-      method: 'POST',
-      body: {
-        username: 'yankun',
-        password: '261304',
-      },
-    })
-    console.log('res', res)
-  } catch (err) {
-    console.error('获取用户失败', err)
-  }
-}
-async function login() {
-  try {
-    const res = await $fetch('/api/auth/login', {
-      method: 'POST',
-      body: {
-        username: 'yankun',
-        password: '261304',
-      },
-    })
-    console.log('res', res)
-  } catch (err) {
-    console.error('获取用户失败', err)
-  }
-}
 onMounted(() => {
-  // register()
-  // login()
+  getProductList()
 })
 </script>
 <style lang="scss" scoped>

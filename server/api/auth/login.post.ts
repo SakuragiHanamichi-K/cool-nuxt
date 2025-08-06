@@ -3,6 +3,7 @@ import UserSchema from '~~/server/models/User'
 import bcrypt from 'bcryptjs'
 import { AUTH_TOKEN_COOKIE, AUTH_TOKEN_HEADER, TOKEN_PREFIXES, TOKEN_VALIDITY_PERIOD } from '~~/server/utils/constant'
 const runtimeConfig = useRuntimeConfig()
+import { StatusCodeMap } from '~~/server/utils/codeMap'
 
 export default defineEventHandler(async event => {
   const body = await readBody(event)
@@ -11,12 +12,12 @@ export default defineEventHandler(async event => {
   const UserModel = mongo.getModel(runtimeConfig.mongoTableName, 'User', UserSchema)
   const user = await UserModel.findOne({ username })
   if (!user) {
-    return event.context.fail(CodeMap.NOT_FOUND, '用户不存在!')
+    return event.context.fail(StatusCodeMap.NOT_FOUND, '用户不存在!')
   }
 
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) {
-    return event.context.fail(CodeMap.FORBIDDEN, '密码错误!')
+    return event.context.fail(StatusCodeMap.FORBIDDEN, '密码错误!')
   }
 
   const token = signToken({ userId: user._id, username: user.username })
@@ -27,5 +28,5 @@ export default defineEventHandler(async event => {
     sameSite: 'lax', // 控制跨域
     maxAge: TOKEN_VALIDITY_PERIOD,
   })
-  return event.context.success(CodeMap.SUCCESS, '登录成功!', user)
+  return event.context.success(StatusCodeMap.SUCCESS, '登录成功!', user)
 })
