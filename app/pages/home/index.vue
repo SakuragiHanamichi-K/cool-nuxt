@@ -35,7 +35,19 @@
       <UButton label="Open" color="neutral" variant="subtle" />
 
       <template #body>
-        <!-- <Placeholder class="h-48" /> -->
+        <!-- <form @submit.prevent="handleSubmit">
+          <UFormField label="用户名" name="username">
+            <UInput v-model="form.username" placeholder="请输入用户名" required />
+          </UFormField>
+
+          <UFormField label="密码" name="password" class="mt-4">
+            <UInput v-model="form.password" type="password" placeholder="请输入密码" required />
+          </UFormField>
+
+          <div class="mt-6">
+            <UButton :loading="loading" type="submit" color="primary" block>登录 / 注册</UButton>
+          </div>
+        </form> -->
       </template>
     </UModal>
   </div>
@@ -43,6 +55,9 @@
 <script setup lang="ts">
 const { $fetch } = useNuxtApp()
 const loading = ref(false)
+const form = reactive({})
+const itemsPerRow = 5
+const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
 const contentList = reactive([
   { id: 1, name: '家电' },
   { id: 2, name: '手机' },
@@ -71,8 +86,22 @@ async function getProductList() {
       loading.value = false
     })
 }
-const itemsPerRow = 5
-const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
+async function handleSubmit() {
+  loading.value = true
+  await $fetch('/api/public/product/product-list', {
+    method: 'POST',
+    body: {},
+  })
+    .then(res => {
+      console.log('+res+', res)
+    })
+    .catch(err => {
+      console.log('err', err)
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
 onMounted(() => {
   getProductList()
 })

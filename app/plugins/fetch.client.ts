@@ -1,3 +1,4 @@
+// 重写 $fetch 客户端请求，添加全局错误处理和登录跳转逻辑 注 使用时只能通过 const { $fetch } = useNuxtApp() 来使用
 import { StatusCodeMap, HttpStatusMap } from '~~/server/utils/codeMap'
 export default defineNuxtPlugin(nuxtApp => {
   const rewritingFetch = $fetch.create({
