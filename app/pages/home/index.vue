@@ -41,6 +41,7 @@
   </div>
 </template>
 <script setup lang="ts">
+const { $fetch } = useNuxtApp()
 const loading = ref(false)
 const contentList = reactive([
   { id: 1, name: '家电' },
@@ -56,7 +57,7 @@ const contentList = reactive([
 ])
 async function getProductList() {
   loading.value = true
-  await $fetch('/api/product/product-list', {
+  await $fetch('/api/public/product/product-list', {
     method: 'POST',
     body: {},
   })
@@ -64,8 +65,7 @@ async function getProductList() {
       console.log('+res+', res)
     })
     .catch(err => {
-      const errorResponse = extractError(err)
-      console.log('errorResponse', errorResponse)
+      console.log('err', err)
     })
     .finally(() => {
       loading.value = false

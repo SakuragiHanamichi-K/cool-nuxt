@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+const { $fetch } = useNuxtApp()
 definePageMeta({
   layout: 'login',
 })
@@ -40,16 +41,17 @@ const form = reactive({
 })
 async function handleSubmit() {
   loading.value = true
-  await $fetch('/api/auth/login-auto-register', {
+  await $fetch('/api/public/auth/login-auto-register', {
     method: 'POST',
     body: form,
   })
     .then(res => {
-      navigateTo('/')
+      const route = useRoute()
+      const redirect = route.query.redirect || '/'
+      navigateTo(redirect as string)
     })
     .catch(err => {
-      const errorResponse = extractError(err)
-      console.log('errorResponse', errorResponse)
+      console.log('err', err)
     })
     .finally(() => {
       loading.value = false

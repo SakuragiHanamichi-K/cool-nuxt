@@ -2,7 +2,8 @@ import { verifyToken } from '~~/server/utils/jwt'
 import { StatusCodeMap, HttpStatusMap } from '~~/server/utils/codeMap'
 import { AUTH_TOKEN_COOKIE, TOKEN_PREFIXES } from '~~/server/utils/constant'
 // ✅ 白名单路径（支持正则前缀）
-const WHITE_LIST: RegExp[] = [/^\/api\/product/, /^\/api\/auth\//]
+
+const WHITE_LIST: RegExp[] = [/^\/api\/public/]
 
 // ✅ 判断路径是否在白名单中
 function isInWhiteList(path: string): boolean {
@@ -15,11 +16,7 @@ type Response = {
 }
 // ✅ 封装统一响应结构
 function formatResponse({ code, message, data }: Response): Response {
-  return {
-    code: code ?? StatusCodeMap.SUCCESS,
-    message: message ?? 'ok',
-    data: data ?? null,
-  }
+  return { code, message, data }
 }
 // 自动匹配 http 状态码
 const resolveHttpStatus = (code: number, customStatus?: number) => {
@@ -39,12 +36,21 @@ export default defineEventHandler(async event => {
   if (!isInWhiteList(pathname)) {
     const rawToken = getCookie(event, AUTH_TOKEN_COOKIE)
     const token = rawToken ? rawToken.replace(TOKEN_PREFIXES, '') : null
+    // 如果没有 token 返回未授权错误
     if (!token) {
       const status = resolveHttpStatus(StatusCodeMap.UNAUTHORIZED)
       setResponseStatus(event, status)
       return send(event, JSON.stringify(formatResponse({ code: StatusCodeMap.UNAUTHORIZED, message: '请先登录!' })), 'application/json')
     }
-    const user = verifyToken(token)
+    // token 校验, 未通过的话返回登录失效
+    let user
+    try {
+      user = verifyToken(token)
+    } catch (err) {
+      const status = resolveHttpStatus(StatusCodeMap.UNAUTHORIZED)
+      setResponseStatus(event, status)
+      return send(event, JSON.stringify(formatResponse({ code: StatusCodeMap.UNAUTHORIZED, message: '登录已失效，请重新登录!' })), 'application/json')
+    }
     event.context.user = user
   }
 

@@ -1,8 +1,7 @@
 import { StatusCodeMap, HttpStatusMap } from '~~/server/utils/codeMap'
-
 export default defineNuxtPlugin(nuxtApp => {
   const rewritingFetch = $fetch.create({
-    // ✅ 每个请求发出前：自动加上 token
+    // ✅ 每个请求发出前操作：比如自动加上 token
     onRequest({ options }) {},
 
     // ✅ 接口成功返回：不做额外处理
@@ -16,7 +15,6 @@ export default defineNuxtPlugin(nuxtApp => {
         const currentPath = useRoute().fullPath
         navigateTo(`/auth/login?redirect=${encodeURIComponent(currentPath)}`)
       }
-
       // 其他错误保留，继续抛给业务代码处理
       throw response._data || new Error('请求失败')
     },
