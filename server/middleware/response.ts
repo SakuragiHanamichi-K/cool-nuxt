@@ -1,37 +1,31 @@
 import { verifyToken } from '~~/server/utils/jwt'
 import { StatusCodeMap, HttpStatusMap } from '~~/server/utils/codeMap'
 import { AUTH_TOKEN_COOKIE, TOKEN_PREFIXES } from '~~/server/utils/constant'
-// ✅ 白名单路径（支持正则前缀）
-
+import { Response } from '~~/server/types/response'
+// 白名单路径（支持正则前缀）
 const WHITE_LIST: RegExp[] = [/^\/api\/public/]
-
-// ✅ 判断路径是否在白名单中
+// 判断路径是否在白名单中
 function isInWhiteList(path: string): boolean {
   return WHITE_LIST.some(regex => regex.test(path))
 }
-type Response = {
-  code: number
-  message: string
-  data?: any
-}
-// ✅ 封装统一响应结构
+// 封装统一响应结构
 function formatResponse({ code, message, data }: Response): Response {
   return { code, message, data }
 }
 // 自动匹配 http 状态码
-const resolveHttpStatus = (code: number, customStatus?: number) => {
+function resolveHttpStatus(code: number, customStatus?: number): number {
   return customStatus || HttpStatusMap[code] || 500
 }
 
 export default defineEventHandler(async event => {
   // 如果不是 API 路径，则直接返回
   if (!event.path.startsWith('/api')) return
-  // ✅ 解析 body，赋值到 context
+  // 解析 body，赋值到 context
   if (['POST', 'PUT', 'PATCH'].includes(event.method)) {
     event.context.body = await readBody(event)
   }
 
-  // ✅ Token 校验（非白名单）
+  // Token 校验（非白名单）
   const pathname = getRequestURL(event).pathname
   if (!isInWhiteList(pathname)) {
     const rawToken = getCookie(event, AUTH_TOKEN_COOKIE)
