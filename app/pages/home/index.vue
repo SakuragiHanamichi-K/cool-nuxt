@@ -35,27 +35,55 @@
       <UButton label="Open" color="neutral" variant="subtle" />
 
       <template #body>
-        <!-- <form @submit.prevent="handleSubmit">
-          <UFormField label="用户名" name="username">
-            <UInput v-model="form.username" placeholder="请输入用户名" required />
+        <form @submit.prevent="handleSubmit">
+          <UFormField label="产品名称" name="username">
+            <UInput v-model="form.productName" placeholder="请输入用户名" />
           </UFormField>
 
-          <UFormField label="密码" name="password" class="mt-4">
-            <UInput v-model="form.password" type="password" placeholder="请输入密码" required />
+          <UFormField label="产品编码" name="password" class="mt-4">
+            <UInput v-model="form.productCode" placeholder="请输入密码" />
+          </UFormField>
+          <UFormField label="所有者" name="password" class="mt-4">
+            <UInput v-model="form.owner" placeholder="请输入密码" />
+          </UFormField>
+          <UFormField label="描述" name="password" class="mt-4">
+            <UInput v-model="form.description" placeholder="请输入密码" />
+          </UFormField>
+          <UFormField label="价值" name="password" class="mt-4">
+            <UInput v-model="form.price" placeholder="请输入密码" />
+          </UFormField>
+          <UFormField label="库存" name="password" class="mt-4">
+            <UInput v-model="form.stock" placeholder="请输入密码" />
+          </UFormField>
+          <UFormField label="类别" name="password" class="mt-4">
+            <UInput v-model="form.category" placeholder="请输入密码" />
+          </UFormField>
+          <UFormField label="图片" name="password" class="mt-4">
+            <UInput v-model="form.imageUrl" placeholder="请输入密码" />
           </UFormField>
 
           <div class="mt-6">
-            <UButton :loading="loading" type="submit" color="primary" block>登录 / 注册</UButton>
+            <UButton :loading="loading" type="submit" color="primary" block>保存</UButton>
           </div>
-        </form> -->
+        </form>
       </template>
     </UModal>
   </div>
 </template>
 <script setup lang="ts">
+import type { ProductType } from '~~/server/models/Product'
 const { $fetch } = useNuxtApp()
 const loading = ref(false)
-const form = reactive({})
+const form: ProductType = reactive({
+  productName: '',
+  productCode: '',
+  owner: '',
+  description: '',
+  price: 0,
+  stock: 0,
+  category: '',
+  imageUrl: '',
+})
 const itemsPerRow = 5
 const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
 const contentList = reactive([
@@ -88,9 +116,11 @@ async function getProductList() {
 }
 async function handleSubmit() {
   loading.value = true
-  await $fetch('/api/public/product/product-list', {
+  await $fetch('/api/private/product/product-add', {
     method: 'POST',
-    body: {},
+    body: {
+      ...form,
+    },
   })
     .then(res => {
       console.log('+res+', res)
