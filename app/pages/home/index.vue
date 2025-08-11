@@ -74,15 +74,15 @@
 import type { ProductType } from '~~/server/models/Product'
 const { $fetch } = useNuxtApp()
 const loading = ref(false)
-const form: ProductType = reactive({
-  productName: '',
-  productCode: '',
-  owner: '',
-  description: '',
-  price: 0,
-  stock: 0,
-  category: '',
-  imageUrl: '',
+const form: Partial<ProductType> = reactive({
+  // productName: '',
+  // productCode: '',
+  // owner: '',
+  // description: '',
+  // price: 0,
+  // stock: 0,
+  // category: '',
+  // imageUrl: '',
 })
 const itemsPerRow = 5
 const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
