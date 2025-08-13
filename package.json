@@ -14,7 +14,7 @@
     "@nuxt/image": "1.10.0",
     "@nuxt/scripts": "0.11.10",
     "@nuxt/test-utils": "3.19.2",
-    "@nuxt/ui-pro": "^3.3.0",
+    "@nuxt/ui": "^3.3.0",
     "@tailwindcss/vite": "^4.1.11",
     "@unhead/vue": "^2.0.12",
     "bcryptjs": "^3.0.2",
