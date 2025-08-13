@@ -18,6 +18,12 @@
 </template>
 
 <script setup>
+// components
+import LoginModal from '~/components/LoginModal.vue'
+// type
+// plugins
+const overlay = useOverlay()
+// variables
 let menus = [
   { name: '首页', path: '/' },
   { name: '登录', path: '/login' },
@@ -32,8 +38,19 @@ let menus = [
   { name: '注册', path: '/register9' },
   { name: '注册', path: '/register0' },
 ]
+// methods
+async function showLogin() {
+  const modal = overlay.create(LoginModal)
+  const instance = modal.open()
+  const result = await instance.result
+  if (result) {
+    useToast().add({ title: '登录成功 🎉', color: 'success' })
+  } else {
+    useToast().add({ title: '登录取消', color: 'neutral' })
+  }
+}
 function handleLogin() {
-  navigateTo('/auth/login')
+  showLogin()
 }
 </script>
 <style lang="scss" scoped>
