@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -20,6 +20,7 @@
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.1",
     "eslint": "^9.31.0",
+    "formidable": "^3.5.4",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.1",
     "nuxt": "^4.0.1",
@@ -29,6 +30,7 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.10",
     "sass": "^1.89.2"
   }

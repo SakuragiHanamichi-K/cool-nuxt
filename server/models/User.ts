@@ -14,3 +14,10 @@ const UserSchema = new mongoose.Schema(
 )
 
 export default UserSchema
+
+export interface UserType {
+  username: string
+  password: string
+  nickname: string
+  avatar: string
+}

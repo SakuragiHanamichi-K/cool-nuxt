@@ -14,13 +14,14 @@
         <div
           class="content-item"
           v-for="(item, index) in contentList"
-          :key="item.id"
+          :key="item._id"
           :style="{
             marginLeft: index % itemsPerRow !== 0 ? '10px' : '0',
             marginTop: index >= itemsPerRow ? '10px' : '0',
           }"
+          @click="handleView(item)"
         >
-          {{ item.name }}
+          {{ item.productName }}
         </div>
       </div>
     </div>
@@ -36,30 +37,27 @@
 
       <template #body>
         <form @submit.prevent="handleSubmit">
-          <UFormField label="产品名称" name="username">
-            <UInput v-model="form.productName" placeholder="请输入用户名" />
+          <UFormField label="产品名称" name="productName">
+            <UInput v-model="form.productName" placeholder="请输入产品名称" />
           </UFormField>
-
-          <UFormField label="产品编码" name="password" class="mt-4">
-            <UInput v-model="form.productCode" placeholder="请输入密码" />
+          <UFormField label="所有者" name="owner" class="mt-4">
+            <UInput v-model="form.owner" placeholder="请输入所有者" />
           </UFormField>
-          <UFormField label="所有者" name="password" class="mt-4">
-            <UInput v-model="form.owner" placeholder="请输入密码" />
+          <UFormField label="描述" name="description" class="mt-4">
+            <UInput v-model="form.description" placeholder="请输入描述" />
           </UFormField>
-          <UFormField label="描述" name="password" class="mt-4">
-            <UInput v-model="form.description" placeholder="请输入密码" />
+          <UFormField label="价值" name="price" class="mt-4">
+            <UInput v-model="form.price" placeholder="请输入价值" />
           </UFormField>
-          <UFormField label="价值" name="password" class="mt-4">
-            <UInput v-model="form.price" placeholder="请输入密码" />
+          <UFormField label="库存" name="stock" class="mt-4">
+            <UInput v-model="form.stock" placeholder="请输入库存" />
           </UFormField>
-          <UFormField label="库存" name="password" class="mt-4">
-            <UInput v-model="form.stock" placeholder="请输入密码" />
+          <UFormField label="类别" name="category" class="mt-4">
+            <UInput v-model="form.category" placeholder="请输入类别" />
           </UFormField>
-          <UFormField label="类别" name="password" class="mt-4">
-            <UInput v-model="form.category" placeholder="请输入密码" />
-          </UFormField>
-          <UFormField label="图片" name="password" class="mt-4">
-            <UInput v-model="form.imageUrl" placeholder="请输入密码" />
+          <UFormField label="图片" name="imageUrl" class="mt-4">
+            <!-- <UInput v-model="form.imageUrl" placeholder="请输入图片" /> -->
+            <UFileUpload :modelValue="form.imageUrl" multiple class="w-96 min-h-48" @update:modelValue="onFilesChange" />
           </UFormField>
 
           <div class="mt-6">
@@ -68,36 +66,67 @@
         </form>
       </template>
     </UModal>
+    <UModal
+      v-model:open="open"
+      title="Modal with close button"
+      :close="{
+        color: 'primary',
+        variant: 'outline',
+        class: 'rounded-full',
+      }"
+    >
+      <template #body>
+        <form @submit.prevent="handleSubmit">
+          <UFormField label="产品名称" name="productName">
+            <UInput v-model="productInfo.productName" placeholder="请输入产品名称" disabled />
+          </UFormField>
+          <UFormField label="所有者" name="owner" class="mt-4">
+            <UInput v-model="productInfo.owner" placeholder="请输入所有者" disabled />
+          </UFormField>
+          <UFormField label="描述" name="description" class="mt-4">
+            <UInput v-model="productInfo.description" placeholder="请输入描述" disabled />
+          </UFormField>
+          <UFormField label="价值" name="price" class="mt-4">
+            <UInput v-model="productInfo.price" placeholder="请输入价值" disabled />
+          </UFormField>
+          <UFormField label="库存" name="stock" class="mt-4">
+            <UInput v-model="productInfo.stock" placeholder="请输入库存" disabled />
+          </UFormField>
+          <UFormField label="类别" name="category" class="mt-4">
+            <UInput v-model="productInfo.category" placeholder="请输入类别" disabled />
+          </UFormField>
+          <UFormField label="图片" name="imageUrl" class="mt-4">
+            <UFileUpload v-model="productInfo.imageUrl" multiple class="w-96 min-h-48" />
+          </UFormField>
+
+          <div class="mt-6">
+            <UButton :loading="loading" color="primary" block @click="handleChange">申请交换</UButton>
+          </div>
+        </form>
+      </template>
+    </UModal>
+    <UDrawer v-model:open="changeOpen" title="选择你的产品去交换">
+      <template #content>
+        <span @click="handleChoose">产品1</span>
+        |
+        <span @click="handleChoose">产品2</span>
+        |
+        <span @click="handleChoose">产品3</span>
+      </template>
+    </UDrawer>
   </div>
 </template>
 <script setup lang="ts">
 import type { ProductType } from '~~/server/models/Product'
 const { $fetch } = useNuxtApp()
 const loading = ref(false)
-const form: Partial<ProductType> = reactive({
-  // productName: '',
-  // productCode: '',
-  // owner: '',
-  // description: '',
-  // price: 0,
-  // stock: 0,
-  // category: '',
-  // imageUrl: '',
-})
+const open = ref(false)
+const changeOpen = ref(false)
+const form: Partial<ProductType> = reactive({})
+const productInfo = ref<Partial<ProductType>>({})
 const itemsPerRow = 5
 const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
-const contentList = reactive([
-  { id: 1, name: '家电' },
-  { id: 2, name: '手机' },
-  { id: 3, name: '裤子' },
-  { id: 4, name: '衣服' },
-  { id: 5, name: '手机' },
-  { id: 6, name: '耳机' },
-  { id: 7, name: '床铺' },
-  { id: 8, name: '家庭' },
-  { id: 9, name: '内衣' },
-  { id: 10, name: '袜子' },
-])
+let contentList = ref<(ProductType & { _id: string })[]>([])
 async function getProductList() {
   loading.value = true
   await $fetch('/api/public/product/product-list', {
@@ -105,7 +134,8 @@ async function getProductList() {
     body: {},
   })
     .then(res => {
-      console.log('+res+', res)
+      contentList.value = res.data
+      console.log('+res+', contentList)
     })
     .catch(err => {
       console.log('err', err)
@@ -131,6 +161,26 @@ async function handleSubmit() {
     .finally(() => {
       loading.value = false
     })
+}
+function handleView(record: ProductType) {
+  console.log('Viewing record:', record)
+  productInfo.value = { ...record }
+  open.value = true
+  // 这里可以添加跳转逻辑或其他操作
+}
+function handleChange() {
+  console.log('申请交换', productInfo.value)
+  changeOpen.value = true
+  // 这里可以添加申请交换的逻辑
+}
+function handleChoose() {
+  console.log('选择产品进行交换')
+  changeOpen.value = false
+  open.value = true
+  // 这里可以添加选择产品进行交换的逻辑
+}
+function onFilesChange(...args: unknown[]) {
+  const newFiles = args[0] as File[]
 }
 onMounted(() => {
   getProductList()
