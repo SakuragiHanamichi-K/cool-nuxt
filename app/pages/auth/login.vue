@@ -30,15 +30,17 @@
 </template>
 
 <script setup lang="ts">
-const { $fetch } = useNuxtApp()
 definePageMeta({
   layout: 'login',
 })
+// type
+import type { UserType } from '~~/server/models/User'
+// plugins
+const { $fetch } = useNuxtApp()
+// variables
 const loading = ref(false)
-const form = reactive({
-  username: '',
-  password: '',
-})
+const form: Partial<UserType> = reactive({})
+//methods
 async function handleSubmit() {
   loading.value = true
   await $fetch('/api/public/auth/login-auto-register', {

@@ -12,8 +12,8 @@
       </div>
       <div class="bottom-content">
         <div
-          class="content-item"
           v-for="(item, index) in contentList"
+          class="content-item"
           :key="item._id"
           :style="{
             marginLeft: index % itemsPerRow !== 0 ? '10px' : '0',
@@ -117,8 +117,11 @@
   </div>
 </template>
 <script setup lang="ts">
+// type
 import type { ProductType } from '~~/server/models/Product'
+// plugins
 const { $fetch } = useNuxtApp()
+// variables
 const loading = ref(false)
 const open = ref(false)
 const changeOpen = ref(false)
@@ -127,6 +130,7 @@ const productInfo = ref<Partial<ProductType>>({})
 const itemsPerRow = 5
 const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
 let contentList = ref<(ProductType & { _id: string })[]>([])
+//methods
 async function getProductList() {
   loading.value = true
   await $fetch('/api/public/product/product-list', {
