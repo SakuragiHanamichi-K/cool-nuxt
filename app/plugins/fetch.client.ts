@@ -6,7 +6,7 @@ import { StatusCodeMap, HttpStatusMap } from '~~/server/utils/codeMap'
 export default defineNuxtPlugin(nuxtApp => {
   const rewritingFetch = $fetch.create({
     // ✅ 每个请求发出前操作：比如自动加上 token
-    onRequest({ options }) {},
+    onRequest({ request, options }) {},
 
     // ✅ 接口成功返回：不做额外处理
     onResponse({ response }) {

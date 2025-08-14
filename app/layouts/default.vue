@@ -2,7 +2,8 @@
   <div class="layout-default">
     <div class="header">
       以物换物
-      <span @click="handleLogin">登录</span>
+      <span v-if="!nickName" @click="handleLogin">登录</span>
+      <span v-else>{{ nickName }}</span>
     </div>
     <div class="body-container">
       <div class="sidebar">
@@ -22,6 +23,7 @@
 import LoginModal from '~/components/LoginModal.vue'
 // type
 // plugins
+const userStore = useUserStore()
 const overlay = useOverlay()
 // variables
 let menus = [
@@ -38,6 +40,7 @@ let menus = [
   { name: '注册', path: '/register9' },
   { name: '注册', path: '/register0' },
 ]
+const nickName = userStore.user?.nickname
 // methods
 async function showLogin() {
   const modal = overlay.create(LoginModal)

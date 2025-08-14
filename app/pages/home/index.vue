@@ -121,6 +121,7 @@
 import type { ProductType } from '~~/server/models/Product'
 // plugins
 const { $fetch } = useNuxtApp()
+
 // variables
 const loading = ref(false)
 const open = ref(false)

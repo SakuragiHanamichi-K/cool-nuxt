@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema(
         message: '密码必须包含英文和数字',
       },
     }, // 存储加密后的密码
-    nickname: { type: String },
+    nickname: { type: String, default: '匿名用户' }, // 昵称，默认为空字符串
     avatar: { type: String },
     createdAt: { type: Date, default: Date.now },
   },

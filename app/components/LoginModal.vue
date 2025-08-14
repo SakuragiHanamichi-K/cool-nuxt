@@ -3,6 +3,7 @@
 // plugins
 import { z } from 'zod'
 const { $fetch } = useNuxtApp()
+const userStore = useUserStore()
 // variables
 const loading = ref(false)
 const username = ref('')
@@ -44,6 +45,7 @@ async function handleLogin() {
     },
   })
     .then(res => {
+      userStore.setUser(res.data)
       emit('close', res)
       location.reload()
     })
@@ -61,7 +63,7 @@ async function handleLogin() {
   <UModal title="登录" @close="emit('close', null)" transition>
     <template #body>
       <div class="flex flex-col gap-4">
-        <input v-model="username" placeholder="用户名" class="border p-2 rounded" />
+        <input v-model="username" placeholder="账号" class="border p-2 rounded" />
         <input type="password" v-model="password" placeholder="密码" class="border p-2 rounded" />
         <p v-show="errorMsg" class="text-red-500 text-sm">{{ errorMsg }}</p>
       </div>
