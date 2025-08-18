@@ -30,7 +30,7 @@
   // 调试日志关闭
   "vue.trace.server": "off",
   // cSpell 设置
-  "cSpell.words": ["nuxt", "nuxthub", "ofetch", "runtimeConfig", "env", "dotenv", "piniaPluginPersistedstate", "pinia-plugin-persistedstate"],
+  "cSpell.words": ["nuxt", "nuxthub", "ofetch", "runtimeConfig", "env", "dotenv", "piniaPluginPersistedstate", "pinia-plugin-persistedstate", "multistream"],
   // Prettier 相关
   "prettier.configPath": "./.prettierrc.json",
   "files.associations": {

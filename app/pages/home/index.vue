@@ -141,7 +141,6 @@ async function getProductList() {
   })
     .then(res => {
       contentList.value = res.data
-      console.log('+res+', contentList)
     })
     .catch(err => {
       console.log('err', err)
@@ -169,18 +168,15 @@ async function handleSubmit() {
     })
 }
 function handleView(record: ProductType) {
-  console.log('Viewing record:', record)
   productInfo.value = { ...record }
   open.value = true
   // 这里可以添加跳转逻辑或其他操作
 }
 function handleChange() {
-  console.log('申请交换', productInfo.value)
   changeOpen.value = true
   // 这里可以添加申请交换的逻辑
 }
 function handleChoose() {
-  console.log('选择产品进行交换')
   changeOpen.value = false
   open.value = true
   // 这里可以添加选择产品进行交换的逻辑

@@ -2,8 +2,10 @@
   <div class="layout-default">
     <div class="header">
       以物换物
-      <span v-if="!nickName" @click="handleLogin">登录</span>
-      <span v-else>{{ nickName }}</span>
+      <ClientOnly>
+        <span v-if="!nickName" @click="handleLogin">登录</span>
+        <span v-else>{{ nickName }}</span>
+      </ClientOnly>
     </div>
     <div class="body-container">
       <div class="sidebar">
@@ -40,7 +42,7 @@ let menus = [
   { name: '注册', path: '/register9' },
   { name: '注册', path: '/register0' },
 ]
-const nickName = userStore.user?.nickname
+const nickName = userStore?.user?.nickname
 // methods
 async function showLogin() {
   const modal = overlay.create(LoginModal)
