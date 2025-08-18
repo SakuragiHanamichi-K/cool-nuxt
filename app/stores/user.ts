@@ -1,9 +1,10 @@
+import type { UserType } from '~~/server/models/User'
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: null as null | { username: string; password: string; nickname: string; avatar: string },
+    user: null as null | UserType,
   }),
   actions: {
-    setUser(data: { username: string; password: string; nickname: string; avatar: string }) {
+    setUser(data: UserType) {
       this.user = data
     },
     clearUser() {

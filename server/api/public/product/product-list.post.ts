@@ -1,11 +1,11 @@
-import ProductSchema from '~~/server/models/Product'
+import { ProductMongooseSchema } from '~~/server/models/Product'
 const runtimeConfig = useRuntimeConfig()
-import { StatusCodeMap } from '~~/server/utils/codeMap'
+import { StatusCodeMap } from '~~/server/config/code.config'
 
 export default defineEventHandler(async event => {
   const body = await readBody(event)
   const mongo = useNitroApp().mongo
-  const ProductModel = mongo.getModel(runtimeConfig.mongoTableName, 'Product', ProductSchema)
+  const ProductModel = mongo.getModel(runtimeConfig.mongoTableName, 'Product', ProductMongooseSchema)
   const products = await ProductModel.find({ ...body })
   // if (!products) {
   //   return event.context.fail(StatusCodeMap.NOT_FOUND, '用户不存在!')

@@ -1,36 +1,19 @@
 <script setup lang="ts">
 // type
+import { UserZodSchema, type UserType } from '~~/server/models/User'
 // plugins
-import { z } from 'zod'
 const { $fetch } = useNuxtApp()
 const userStore = useUserStore()
 // variables
-const loading = ref(false)
-const username = ref('')
-const password = ref('')
-const errorMsg = ref('')
-const schema = z.object({
-  username: z
-    .string()
-    .min(3, '用户名至少3个字符')
-    // 必须英文开头
-    .refine(val => /^[A-Za-z]/.test(val), {
-      message: '用户名必须以英文开头',
-    })
-    // 只能包含字母和数字
-    .refine(val => /^[A-Za-z0-9]+$/.test(val), {
-      message: '用户名只能包含字母和数字',
-    }),
+const loading = ref<boolean>(false)
+const username = ref<UserType['username']>('')
+const password = ref<UserType['password']>('')
+const errorMsg = ref<string>('')
 
-  password: z
-    .string()
-    .min(6, '密码至少6位')
-    .regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, '密码必须包含英文和数字'),
-})
 // methods
 const emit = defineEmits<{ close: any }>()
 async function handleLogin() {
-  const result = schema.safeParse({ username: username.value, password: password.value })
+  const result = UserZodSchema.safeParse({ username: username.value, password: password.value })
   if (!result.success) {
     errorMsg.value = result.error?.issues?.[0]?.message ?? ''
     return

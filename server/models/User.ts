@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import { z } from 'zod'
 
-const UserSchema = new mongoose.Schema(
+export const UserMongooseSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -37,5 +38,24 @@ const UserSchema = new mongoose.Schema(
     collection: 'users',
   },
 )
+export const UserZodSchema = z.object({
+  username: z
+    .string()
+    .min(3, '用户名至少3个字符')
+    // 必须英文开头
+    .refine(val => /^[A-Za-z]/.test(val), {
+      message: '用户名必须以英文开头',
+    })
+    // 只能包含字母和数字
+    .refine(val => /^[A-Za-z0-9]+$/.test(val), {
+      message: '用户名只能包含字母和数字',
+    }),
 
-export default UserSchema
+  password: z
+    .string()
+    .min(6, '密码至少6位')
+    .regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, '密码必须包含英文和数字'),
+  nickname: z.string().optional(), // 可以不传
+  avatar: z.string().optional(), // 可以不传
+})
+export type UserType = z.infer<typeof UserZodSchema>

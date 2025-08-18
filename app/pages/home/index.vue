@@ -131,7 +131,8 @@ const productInfo = ref<Partial<ProductType>>({})
 const itemsPerRow = 5
 const itemsReduction = ((itemsPerRow - 1) * 10) / itemsPerRow + 'px'
 let contentList = ref<(ProductType & { _id: string })[]>([])
-//methods
+// methods
+
 async function getProductList() {
   loading.value = true
   await $fetch('/api/public/product/product-list', {

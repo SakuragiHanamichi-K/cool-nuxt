@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import { generateCode } from '~~/server/utils/tools'
-const ProductSchema = new mongoose.Schema(
+import { z } from 'zod'
+
+export const ProductMongooseSchema = new mongoose.Schema(
   {
     productName: { type: String, required: true }, // 产品名称
     productCode: { type: String, required: false, unique: true }, // 产品编码，唯一标识
@@ -17,22 +19,24 @@ const ProductSchema = new mongoose.Schema(
   },
 )
 
-ProductSchema.pre('save', async function (next) {
+ProductMongooseSchema.pre('save', async function (next) {
   if (!this.productCode) {
     this.productCode = generateCode('p')
   }
   next()
 })
 
-export default ProductSchema
-
-export interface ProductType {
-  productName: string
-  productCode: string
-  owner: string
-  description: string
-  price: number
-  stock: number
-  category: string
-  imageUrl: File[] | undefined | null
-}
+export const ProductZodSchema = z.object({
+  productName: z.string(),
+  productCode: z.string(),
+  owner: z.string(),
+  description: z.string().optional(), // 可选字段
+  price: z.number(),
+  stock: z.number(),
+  category: z.string(),
+  imageUrl: z
+    .array(z.instanceof(File)) // File 数组
+    .nullable() // 可以为 null
+    .optional(),
+})
+export type ProductType = z.infer<typeof ProductZodSchema>

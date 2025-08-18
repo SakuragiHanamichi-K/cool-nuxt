@@ -1,6 +1,7 @@
 import { verifyToken } from '~~/server/utils/jwt'
-import { StatusCodeMap, HttpStatusMap } from '~~/server/utils/codeMap'
-import { AUTH_TOKEN_COOKIE, TOKEN_PREFIXES } from '~~/server/utils/constant'
+import { StatusCodeMap, HttpStatusMap } from '~~/server/config/code.config'
+import { authConfig } from '~~/server/config/auth.config'
+
 import { Response } from '~~/server/types/response'
 // 白名单路径（支持正则前缀）
 const WHITE_LIST: RegExp[] = [/^\/api\/public/]
@@ -28,8 +29,8 @@ export default defineEventHandler(async event => {
   // Token 校验（非白名单）
   const pathname = getRequestURL(event).pathname
   if (!isInWhiteList(pathname)) {
-    const rawToken = getCookie(event, AUTH_TOKEN_COOKIE)
-    const token = rawToken ? rawToken.replace(TOKEN_PREFIXES, '') : null
+    const rawToken = getCookie(event, authConfig.tokenCookie)
+    const token = rawToken ? rawToken.replace(authConfig.tokenPrefix, '') : null
     // 如果没有 token 返回未授权错误
     if (!token) {
       const status = resolveHttpStatus(StatusCodeMap.UNAUTHORIZED)
