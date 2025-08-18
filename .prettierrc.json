@@ -14,5 +14,6 @@
   "htmlWhitespaceSensitivity": "ignore",
   "vueIndentScriptAndStyle": false,
   "embeddedLanguageFormatting": "auto",
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

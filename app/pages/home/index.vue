@@ -40,25 +40,18 @@
           <UFormField label="产品名称" name="productName">
             <UInput v-model="form.productName" placeholder="请输入产品名称" />
           </UFormField>
-          <UFormField label="所有者" name="owner" class="mt-4">
-            <UInput v-model="form.owner" placeholder="请输入所有者" />
-          </UFormField>
           <UFormField label="描述" name="description" class="mt-4">
             <UInput v-model="form.description" placeholder="请输入描述" />
           </UFormField>
           <UFormField label="价值" name="price" class="mt-4">
             <UInput v-model="form.price" placeholder="请输入价值" />
           </UFormField>
-          <UFormField label="库存" name="stock" class="mt-4">
-            <UInput v-model="form.stock" placeholder="请输入库存" />
-          </UFormField>
           <UFormField label="类别" name="category" class="mt-4">
             <UInput v-model="form.category" placeholder="请输入类别" />
           </UFormField>
-          <UFormField label="图片" name="imageUrl" class="mt-4">
-            <!-- <UInput v-model="form.imageUrl" placeholder="请输入图片" /> -->
-            <UFileUpload :modelValue="form.imageUrl" multiple class="w-96 min-h-48" @update:modelValue="onFilesChange" />
-          </UFormField>
+          <!-- <UFormField label="图片" name="imageUrl" class="mt-4">
+            <UFileUpload :modelValue="form.imageUrl" multiple class="min-h-48 w-96" @update:modelValue="onFilesChange" />
+          </UFormField> -->
 
           <div class="mt-6">
             <UButton :loading="loading" type="submit" color="primary" block>保存</UButton>
@@ -76,12 +69,9 @@
       }"
     >
       <template #body>
-        <form @submit.prevent="handleSubmit">
+        <form>
           <UFormField label="产品名称" name="productName">
             <UInput v-model="productInfo.productName" placeholder="请输入产品名称" disabled />
-          </UFormField>
-          <UFormField label="所有者" name="owner" class="mt-4">
-            <UInput v-model="productInfo.owner" placeholder="请输入所有者" disabled />
           </UFormField>
           <UFormField label="描述" name="description" class="mt-4">
             <UInput v-model="productInfo.description" placeholder="请输入描述" disabled />
@@ -89,15 +79,12 @@
           <UFormField label="价值" name="price" class="mt-4">
             <UInput v-model="productInfo.price" placeholder="请输入价值" disabled />
           </UFormField>
-          <UFormField label="库存" name="stock" class="mt-4">
-            <UInput v-model="productInfo.stock" placeholder="请输入库存" disabled />
-          </UFormField>
           <UFormField label="类别" name="category" class="mt-4">
             <UInput v-model="productInfo.category" placeholder="请输入类别" disabled />
           </UFormField>
-          <UFormField label="图片" name="imageUrl" class="mt-4">
-            <UFileUpload v-model="productInfo.imageUrl" multiple class="w-96 min-h-48" />
-          </UFormField>
+          <!-- <UFormField label="图片" name="imageUrl" class="mt-4">
+            <UFileUpload v-model="productInfo.imageUrl" multiple class="min-h-48 w-96" />
+          </UFormField> -->
 
           <div class="mt-6">
             <UButton :loading="loading" color="primary" block @click="handleChange">申请交换</UButton>
@@ -186,9 +173,10 @@ function onFilesChange(...args: unknown[]) {
 }
 onMounted(() => {
   getProductList()
+  console.log('useWindowSize', useWindowSize())
 })
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .top {
   width: 100%;
   height: 300px;

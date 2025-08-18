@@ -15,10 +15,8 @@ export default defineEventHandler(async event => {
   return new Promise((resolve, reject) => {
     form.parse(event.node.req, (err, fields, files) => {
       if (err) return reject(err)
-
       const fileArr = Array.isArray(files.file) ? files.file : [files.file]
       const urls = fileArr.map(f => `/uploads/${path.basename((f as { filepath: string }).filepath)}`)
-
       resolve({ code: 0, message: '上传成功', urls })
     })
   })
